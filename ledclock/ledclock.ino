@@ -5,6 +5,8 @@
 #include <WiFiUDP.h>
 #include <NTPClient.h>
 
+#include "credentials.h"
+
 #define HARDWARE_TYPE MD_MAX72XX::FC16_HW
 #define MAX_DEVICES 4
 
@@ -12,8 +14,7 @@
 #define DATA_PIN  D7
 #define CS_PIN    D8
 
-const char *ssid     = "";
-const char *password = "";
+
 
 const long utcOffsetInSeconds = 10800; // TZ offset in seconds
 
