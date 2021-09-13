@@ -16,12 +16,13 @@
 #define DATA_PIN  D7
 #define CS_PIN    D8
 
-
-
 const long utcOffsetInSeconds = 10800; // TZ offset in seconds
+
 unsigned int h;
 unsigned int m;
-
+char *theTime = "";
+unsigned long now;
+unsigned long now2 = 0;
 
 // Arbitrary output pins
 // MD_Parola P = MD_Parola(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
@@ -29,7 +30,6 @@ MD_Parola P = MD_Parola(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
-long now;
 
 void setup() {
   Serial.begin(115200);
@@ -42,9 +42,10 @@ void setup() {
     Serial.print ( "." );
   }
 
-  P.displayText("WiFi OK", PA_CENTER, SPEED_TIME, PAUSE_TIME, PA_SCROLL_LEFT, PA_SCROLL_LEFT);
+  P.displayText("WiFi OK", PA_CENTER, SPEED_TIME, PAUSE_TIME, PA_PRINT, PA_SCROLL_LEFT);
   P.displayAnimate();
   timeClient.begin();
+  delay(2000);
 
 }
 
@@ -57,6 +58,28 @@ void loop() {
     Serial.print("** Time updated ** ");
     Serial.print(h); Serial.print("h");
     Serial.print(m); Serial.println("m");
+  }
+
+
+
+  /*  else {
+      sprintf(theTime, "%d : %d", h, m);
+    } */
+  if (P.displayAnimate()) // animates and returns true when an animation is completed
+  {
+    sprintf(theTime, "%2d : %2d", h, m);
+
+    if ((millis() - now2) > 1000) {
+      sprintf(theTime, "%2d   %2d", h, m);
+      now2 = millis();
+    }
+    //    P.setTextBuffer(theTime, theTime);
+    P.displayText(theTime, PA_CENTER, 500, 0, PA_NO_EFFECT, PA_NO_EFFECT);
+
+
+    // Tell Parola we have a new animation
+    P.displayReset();
+    //    delay(50);
   }
 
 
