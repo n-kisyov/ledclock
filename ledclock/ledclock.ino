@@ -17,20 +17,41 @@
 
 
 const long utcOffsetInSeconds = 10800; // TZ offset in seconds
+unsigned int h;
+unsigned int m;
 
-
-MD_Parola P = MD_Parola(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
 
 // Arbitrary output pins
 // MD_Parola P = MD_Parola(HARDWARE_TYPE, DATA_PIN, CLK_PIN, CS_PIN, MAX_DEVICES);
+MD_Parola P = MD_Parola(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
 
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+long now;
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(115200);
+  WiFi.begin(ssid, password);
+
+  while ( WiFi.status() != WL_CONNECTED ) {
+    delay ( 500 );
+    Serial.print ( "." );
+  }
+
+  timeClient.begin();
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  if ((millis() - now) > 1000) {
+    timeClient.update();
+    h = timeClient.getHours();
+    m = timeClient.getMinutes();
+    now = millis();
+    Serial.print("** Time updated ** ");
+    Serial.print(h); Serial.print("h");
+    Serial.print(m); Serial.println("m");
+  }
+
 
 }
