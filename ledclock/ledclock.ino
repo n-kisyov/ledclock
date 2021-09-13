@@ -34,6 +34,7 @@ NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 void setup() {
   Serial.begin(115200);
   WiFi.begin(ssid, password);
+
   P.begin();
   P.setInvert(false);
 
@@ -41,6 +42,9 @@ void setup() {
     delay ( 500 );
     Serial.print ( "." );
   }
+
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
 
   P.displayText("WiFi OK", PA_CENTER, SPEED_TIME, PAUSE_TIME, PA_PRINT, PA_SCROLL_LEFT);
   P.displayAnimate();
@@ -60,11 +64,6 @@ void loop() {
     Serial.print(m); Serial.println("m");
   }
 
-
-
-  /*  else {
-      sprintf(theTime, "%d : %d", h, m);
-    } */
   if (P.displayAnimate()) // animates and returns true when an animation is completed
   {
     sprintf(theTime, "%2d : %2d", h, m);
@@ -73,11 +72,9 @@ void loop() {
       sprintf(theTime, "%2d   %2d", h, m);
       now2 = millis();
     }
-    //    P.setTextBuffer(theTime, theTime);
+
     P.displayText(theTime, PA_CENTER, 500, 0, PA_NO_EFFECT, PA_NO_EFFECT);
 
-
-    // Tell Parola we have a new animation
     P.displayReset();
     //    delay(50);
   }
