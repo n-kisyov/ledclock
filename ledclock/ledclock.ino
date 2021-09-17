@@ -45,7 +45,6 @@ void setup() {
     Serial.print ( "." );
   }
 
-
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
@@ -60,7 +59,6 @@ void setup() {
       type = "filesystem";
     }
 
-    // NOTE: if updating FS this would be the place to unmount FS using FS.end()
     Serial.println("Start updating " + type);
   });
   ArduinoOTA.onEnd([]() {
@@ -83,6 +81,7 @@ void setup() {
       Serial.println("End Failed");
     }
   });
+
   ArduinoOTA.begin();
 
   P.displayText("WiFi OK", PA_CENTER, SPEED_TIME, PAUSE_TIME, PA_PRINT, PA_SCROLL_LEFT);
@@ -93,7 +92,9 @@ void setup() {
 }
 
 void loop() {
+
   ArduinoOTA.handle();
+
   if ((millis() - now) > 1000) {
     timeClient.update();
     h = timeClient.getHours();
