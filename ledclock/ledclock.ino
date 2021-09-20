@@ -14,9 +14,15 @@
 #define SPEED_TIME  25
 #define PAUSE_TIME  1000
 
-#define CLK_PIN   D5
-#define DATA_PIN  D7
-#define CS_PIN    D8
+/* pinout on Wemos D1 R2 v2
+  #define CLK_PIN   D5
+  #define DATA_PIN  D7
+  #define CS_PIN    D8  */
+
+// esp8266 pinout
+#define CLK_PIN   14
+#define DATA_PIN  13
+#define CS_PIN    15
 
 const long utcOffsetInSeconds = 10800; // TZ offset in seconds
 
@@ -36,7 +42,6 @@ NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 void setup() {
   Serial.begin(115200);
   WiFi.begin(ssid, password);
-
   P.begin();
   P.setInvert(false);
 
@@ -49,8 +54,8 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   ArduinoOTA.setPort(8266);
-  ArduinoOTA.setHostname("esp8266-ledclock");
-  ArduinoOTA.setPassword("password");
+  ArduinoOTA.setHostname("esp8266-ledclock2");
+  ArduinoOTA.setPassword(otaPassword);
   ArduinoOTA.onStart([]() {
     String type;
     if (ArduinoOTA.getCommand() == U_FLASH) {
