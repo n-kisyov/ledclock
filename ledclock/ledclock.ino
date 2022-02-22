@@ -24,7 +24,7 @@
 #define DATA_PIN  13
 #define CS_PIN    15
 
-const long utcOffsetInSeconds = 10800; // TZ offset in seconds
+const long utcOffsetInSeconds = 7200; // TZ offset in seconds
 
 unsigned int h;
 unsigned int m;
@@ -54,7 +54,7 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   ArduinoOTA.setPort(8266);
-  ArduinoOTA.setHostname("esp8266-ledclock2");
+  ArduinoOTA.setHostname("esp8266-ledclock3");
   ArduinoOTA.setPassword(otaPassword);
   ArduinoOTA.onStart([]() {
     String type;
